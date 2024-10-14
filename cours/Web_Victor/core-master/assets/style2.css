@@ -1,0 +1,29 @@
+#map { height: 380px; }
+body{
+    display: grid;
+    grid-template-columns:1fr;
+    grid-template-rows: 70px 1fr;
+}
+#entete{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    background-color: grey;
+}
+
+#villes {
+    position: absolute;
+    top: 100px;
+    left: 0; right: 0;
+    z-index: 5000;
+    padding: 0;
+    background: lightblue;
+    width:200px;
+}
+#villes li {
+    padding: 10px;
+    list-style-type: none;
+}
+#villes li:hover {
+    background: white;
+}
