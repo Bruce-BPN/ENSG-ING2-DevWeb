@@ -1,0 +1,11 @@
+Push à venir, pas de connexion suffisament puissante
+Créer base de données avec postgis pour étudier compatibilité avec début code
+Voir si besoin ajouter des niveaux apparition objet : 0 pour initial sur la carte, 1 pour le suivant, ..., N pour un objet final qui fait gagner le jeu.
+
+#######Synopsis du jeu########
+Découvre tous les secrets de UGE. Les bâtiments que l on voit tous les jours recellent de trésors cachés auxquels on ne prête aucune attention. Cette application va vous les faire découvrir car ces trésors sont magiques.
+
+
+
+###Idées d'énigmes###
+Pour le code à 4 chiffres : Date de création de UGE + Date arrivée ENSG à Champs-sur-Marne
