@@ -20,7 +20,7 @@ Vue.createApp({
     }).addTo(this.map);
 
     this.ajouter();
-    //map.on('click', this.onMapClick);
+    //this.map.on('click', this.onMapClick);
 
 
     //var livre = L.icon({
@@ -42,23 +42,39 @@ Vue.createApp({
             objet =>{
               let coords = objet["position"]
               let coords_test = coords.replace(/[{}]/g, '').split(',').map(Number)
+              let taille = objet["taille"]
+              let taille_test = taille.replace(/[{}]/g, '').split(',').map(Number)
               let lat = coords_test[0]
               let lon = coords_test[1]
+              let icone = L.icon({
+                iconUrl: objet["url_icone"],
+                iconSize: [taille_test[0], taille_test[1]],
+              })
               console.log(lat, lon)
-              var marker = L.marker([lat, lon]).addTo(this.group);
+              console.log(objet["type"])
+              var marker = L.marker([lat, lon], {icon: icone}).addTo(this.group);
+              if (objet["id"]=='1') {
+                var marker = L.marker([lat, lon], {icon: icone}).addTo(this.group).bindPopup("Début de l'enquête !");
+              }
+              if (objet["id"]=='2') {
+                var marker = L.marker([lat, lon], {icon: icone}).addTo(this.group).bindPopup("Bloqué par un livre bien utile");
+              }
+              if (objet["id"]=='4') {
+                var marker = L.marker([lat, lon], {icon: icone}).addTo(this.group).bindPopup("Le code est " + objet["code"]);
+              }
           })
           this.group.addTo(this.map)
         })
     },
     
     zoomer () { //Affichage des objets en fonction du niveau de zoom de la carte
-      map.on('zoomend', function(marker){ 
-        var z = map.getZoom();
+      this.map.on('zoomend', function(marker){ 
+        var z = this.map.getZoom();
       
         if(z <= 18){ 
           marker.remove(); //On supprime le marker en dessous d'un certain niveau de zoom
         } else {
-          marker.addTo(map);
+          marker.addTo(this.map);
         }
     });
     },
@@ -104,7 +120,7 @@ Vue.createApp({
             .then(r => {
               console.log(r);
               this.objet_N = r.id;
-              r.addTo(map)
+              r.addTo(this.map)
             })
           }else{
             fetch('/api/objets/N', { //On recupere id de l'objet qui bloque

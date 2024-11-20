@@ -27,19 +27,18 @@ Flight::route('/carte', function() {
 
 Flight::route('GET /api/objets', function() {
     $db = renvoieBDD();
-    $objets = [];
     $sth = $db->prepare("SELECT * FROM objets WHERE depart = 'True'"); //On sélectionne les objets de départ
     $sth -> execute();
     $results = $sth->fetchAll(PDO::FETCH_ASSOC);
     Flight::json($results); //On renvoie les objets en json
 });
 
-Flight::route('GET/api/objets/N', function() {
-    $link = Flight::get('db');
-    $N = $_GET['nombre']
-    $sql = "SELECT * FROM db WHERE id = $N"; //On sélectionne l'objet avec l'identifiant N
-    $objets = mysqli_query($link,$sql);  
-    Flight::json(['objet_N' => $objets]); //On renvoie l'objet en json
+Flight::route('GET /api/objets/@id', function($id) {
+    $db = renvoieBDD();
+    $sth = $db->prepare("SELECT * FROM objets WHERE id = $id"); //On sélectionne l'objet avec l'identifiant N
+    $sth -> execute();
+    $results = $sth->fetchAll(PDO::FETCH_ASSOC);  
+    Flight::json([$results]); //On renvoie l'objet en json
 });
 
 
