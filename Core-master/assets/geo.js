@@ -8,7 +8,7 @@ Vue.createApp({
       objets:[],
       objet_N:[],
       tab:[],
-      inventaire:L.featureGroup(),
+      inventaire:L.layerGroup(),
     };
   },
   mounted() {
@@ -20,8 +20,9 @@ Vue.createApp({
     }).addTo(this.map);
 
     this.ajouter();
-    //this.map.on('click', this.onMapClick);
-
+    console.log("zoom", this.map.getZoom());
+    this.map.on('zoomend', this.zoomer);
+    this.group.on('click',this.onMapClick)
 
     //var livre = L.icon({
     //    iconUrl: 'images/livre_729.jpg',
@@ -54,10 +55,10 @@ Vue.createApp({
               console.log(objet["type"])
               var marker = L.marker([lat, lon], {icon: icone}).addTo(this.group);
               if (objet["id"]=='1') {
-                var marker = L.marker([lat, lon], {icon: icone}).addTo(this.group).bindPopup("Début de l'enquête !");
+                var marker = L.marker([lat, lon], {icon: icone}).addTo(this.group);
               }
               if (objet["id"]=='2') {
-                var marker = L.marker([lat, lon], {icon: icone}).addTo(this.group).bindPopup("Bloqué par un livre bien utile");
+                var marker = L.marker([lat, lon], {icon: icone}).addTo(this.group).bindPopup("Bloqué par un livre bien utile").on('click',this.onMapClick);
               }
               if (objet["id"]=='4') {
                 var marker = L.marker([lat, lon], {icon: icone}).addTo(this.group).bindPopup("Le code est " + objet["code"]);
@@ -68,16 +69,19 @@ Vue.createApp({
     },
     
     zoomer () { //Affichage des objets en fonction du niveau de zoom de la carte
-      this.map.on('zoomend', function(marker){ 
         var z = this.map.getZoom();
       
-        if(z <= 18){ 
-          marker.remove(); //On supprime le marker en dessous d'un certain niveau de zoom
+        if(z < 19){
+          if (this.map.hasLayer(this.group)) {
+            this.map.removeLayer(this.group);
+          }          
+          //On supprime le marker en dessous d'un certain niveau de zoom
         } else {
-          marker.addTo(this.map);
-        }
-    });
+          if (!this.map.hasLayer(this.group)) {   
+            this.group.addTo(this.map);
+        }}
     },
+
     identifier () { //On sélectionne l'objet json en fonction de son id
       let donnees = new FormData()
       donnees.append('texte', this.texte)
@@ -91,15 +95,18 @@ Vue.createApp({
         this.objet_N = result;
       })
     },
-    onMapClick(elem) {
-      console.log(elem);
-        if(elem.type = "Récupérable"){
+    onMapClick(evt) {
+      let elem = evt.target
+      console.log('+click');
+        if(elem.type == "Récupérable"){
           this.inventaire.addLayer(elem) //On ajoute l'objet à l'inventaire
-          elem.clearLayers()  //On enlève l'objet de la carte        
+          this.group.removeLayer(elem)
+          console.log('8')
+          this.map.removeLayer(elem)  //On enlève l'objet de la carte        
         }
 
         if(elem.type = "Code"){
-          elem.bindPopup("Le code est" + elem.code) //On affiche le code lorsque l'on clique sur l'objet
+          //elem.bindPopup("Le code est" + elem.code) //On affiche le code lorsque l'on clique sur l'objet
         }
 
         if(elem.type = "Bloqué par objet"){
@@ -114,7 +121,6 @@ Vue.createApp({
           if(test(elem.idBloque,this.inventaire)){  //On teste si l'id de l'élément qui bloque l'objet est dans l'inventaire
             fetch('/api/objets/N', { //On recupere id du nouvel objet et on l'ajoute à la carte
               method: 'get',
-              body: donnees,
             })
             .then(r => r.json())
             .then(r => {
@@ -125,7 +131,6 @@ Vue.createApp({
           }else{
             fetch('/api/objets/N', { //On recupere id de l'objet qui bloque
               method: 'get',
-              body: donnees,
             })
             .then(r => r.json())
             .then(r => {
@@ -138,7 +143,6 @@ Vue.createApp({
         if(elem.type = "Bloqué par code"){
           fetch('/api/objets/N', { //On recupere id de l'objet qui bloque
             method: 'get',
-            body: donnees,
           })
           .then(r => r.json())
           .then(r => {
@@ -146,6 +150,8 @@ Vue.createApp({
             this.objet_N = r.idbloque;
           })
         }
+
+
     },
     },
 }).mount('#map');
