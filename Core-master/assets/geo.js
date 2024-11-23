@@ -22,7 +22,7 @@ Vue.createApp({
     this.ajouter();
     console.log("zoom", this.map.getZoom());
     this.map.on('zoomend', this.zoomer);
-    this.group.on('click',this.onMapClick)
+    //this.group.on('click',this.onMapClick)
 
     //var livre = L.icon({
     //    iconUrl: 'images/livre_729.jpg',
@@ -51,17 +51,17 @@ Vue.createApp({
                 iconUrl: objet["url_icone"],
                 iconSize: [taille_test[0], taille_test[1]],
               })
-              console.log(lat, lon)
-              console.log(objet["type"])
-              var marker = L.marker([lat, lon], {icon: icone}).addTo(this.group);
+              //console.log(lat, lon)
+              //console.log(objet["type"])
               if (objet["id"]=='1') {
-                var marker = L.marker([lat, lon], {icon: icone}).addTo(this.group);
+                var marker = L.marker([lat, lon], {icon: icone}).addTo(this.group).on('click',this.onMapClick);
+                marker.type = objet["type"]
               }
               if (objet["id"]=='2') {
                 var marker = L.marker([lat, lon], {icon: icone}).addTo(this.group).bindPopup("Bloqué par un livre bien utile").on('click',this.onMapClick);
               }
               if (objet["id"]=='4') {
-                var marker = L.marker([lat, lon], {icon: icone}).addTo(this.group).bindPopup("Le code est " + objet["code"]);
+                var marker = L.marker([lat, lon], {icon: icone}).addTo(this.group).bindPopup("Le code est " + objet["code"]).on('click',this.onMapClick);
               }
           })
           this.group.addTo(this.map)
@@ -98,6 +98,7 @@ Vue.createApp({
     onMapClick(evt) {
       let elem = evt.target
       console.log('+click');
+      console.log(elem)
         if(elem.type == "Récupérable"){
           this.inventaire.addLayer(elem) //On ajoute l'objet à l'inventaire
           this.group.removeLayer(elem)
@@ -105,11 +106,11 @@ Vue.createApp({
           this.map.removeLayer(elem)  //On enlève l'objet de la carte        
         }
 
-        if(elem.type = "Code"){
+        if(elem.type == "Code"){
           //elem.bindPopup("Le code est" + elem.code) //On affiche le code lorsque l'on clique sur l'objet
         }
 
-        if(elem.type = "Bloqué par objet"){
+        if(elem.type == "Bloqué par objet"){
           function test(id, inv){ //fonction test qui compare l'identifiant d'un objet dans l'inventaire avec un autre id
             let res = false
             inv.eachLayer(function (layer) {
@@ -140,7 +141,7 @@ Vue.createApp({
           };
         }
 
-        if(elem.type = "Bloqué par code"){
+        if(elem.type == "Bloqué par code"){
           fetch('/api/objets/N', { //On recupere id de l'objet qui bloque
             method: 'get',
           })
@@ -150,8 +151,6 @@ Vue.createApp({
             this.objet_N = r.idbloque;
           })
         }
-
-
     },
     },
 }).mount('#map');

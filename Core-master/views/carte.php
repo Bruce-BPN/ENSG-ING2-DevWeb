@@ -25,7 +25,7 @@
     </div>
 </div>
 
-<div id="map" @zoomend='zoomer' @click></div>
+<div id="map" @zoomend='zoomer'></div>
 
 <form action="" method="get" @submit.prevent="">
 
