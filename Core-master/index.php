@@ -38,7 +38,7 @@ Flight::route('GET /api/objets/@id', function($id) {
     $sth = $db->prepare("SELECT * FROM objets WHERE id = $id"); //On sélectionne l'objet avec l'identifiant N
     $sth -> execute();
     $results = $sth->fetchAll(PDO::FETCH_ASSOC);  
-    Flight::json([$results]); //On renvoie l'objet en json
+    Flight::json($results); //On renvoie l'objet en json
 });
 
 
