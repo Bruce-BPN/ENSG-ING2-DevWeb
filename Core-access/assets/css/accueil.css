@@ -11,11 +11,21 @@ body {
 }
 
 h1 {
+    visibility: hidden;
+}
+
+.TitleBox {
+    border: 2px solid rgb(15, 58, 29);
+    border-radius: 10px;
+    background-color: #008000;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    margin: 50px auto;
+    max-width: 600px;
     text-align: center;
-    font-size-adjust: 3;
-    background-color: green;
     color: white;
-    /* font-size: 300px; */
+    font-weight: 600;
+    font-size-adjust: 3;
 }
 
 table {
@@ -36,16 +46,17 @@ table {
 #tableIntitule {
     text-align: left;
 }
-.box {
+
+.HFbox {
     border: 2px solid #9e5a1a;
     border-radius: 10px;
-    background-color: #d3a118;
+    background-color: goldenrod;
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     margin: 20px auto;
     max-width: 600px;
     text-align: center;
-    color: #333;
+    color: rgb(54, 49, 47);
     font-weight: 600;
     font-size-adjust: 1;
 }

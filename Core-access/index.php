@@ -27,7 +27,7 @@ Flight::route('/', function() {
 
     $db = renvoieBDD();
     try {
-        $sth = $db->prepare("SELECT * FROM score ORDER BY score DESC LIMIT 10"); // Récupération des scores
+        $sth = $db->prepare("SELECT * FROM score ORDER BY value DESC LIMIT 10"); // Récupération des scores
         $sth->execute();
         $results = $sth->fetchAll(PDO::FETCH_ASSOC); // Récupération des résultats
 
