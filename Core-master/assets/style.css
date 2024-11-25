@@ -5,11 +5,13 @@
 #inventaire {
     grid-row: 5; 
     margin-left: 10px;
+    margin-right: 10px;
+    font-size: 30px;
     margin-bottom: 10px;
     background-color: #d37ae5;
     color: azure;
-    display: block;
-    align-items: right;
+    display: flex;
+    align-items: center;
     height: 100px;
 }
 
@@ -17,6 +19,12 @@
     height: 50px;
     margin-bottom: 10px;
     background-color: rgb(59, 172, 248);
+    display: flex;
+}
+
+#objets {
+    width: 50px;
+    height: 80px;
 }
 
 html {
@@ -25,6 +33,7 @@ html {
 
 h1 {
     color: red; 
+    font-size: 30px;
 }
 
 a {
@@ -33,4 +42,8 @@ a {
 
 p {
     color: rgb(31, 184, 20);
+}
+
+input {
+    margin-left: auto;
 }
