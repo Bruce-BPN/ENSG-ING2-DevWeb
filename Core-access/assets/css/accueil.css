@@ -1,0 +1,65 @@
+body {
+    background-color: lightgreen;
+    font-family: "Parkinsans", serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-size: 1em;
+    font-style: normal;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+h1 {
+    visibility: hidden;
+}
+
+.TitleBox {
+    border: 2px solid rgb(15, 58, 29);
+    border-radius: 10px;
+    background-color: #008000;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    margin: 50px auto;
+    max-width: 600px;
+    text-align: center;
+    color: white;
+    font-weight: 600;
+    font-size-adjust: 3;
+}
+
+table {
+    display: flex;
+    justify-content: space-around;
+    border-collapse: separate;
+    border-spacing: 50px 0;
+    text-align: center;
+}
+
+/* td {
+    padding: 10px 0;
+} */
+
+#tableNom {
+    text-align: left;
+}
+#tableIntitule {
+    text-align: left;
+}
+
+.HFbox {
+    border: 2px solid #9e5a1a;
+    border-radius: 10px;
+    background-color: goldenrod;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    margin: 20px auto;
+    max-width: 600px;
+    text-align: center;
+    color: rgb(54, 49, 47);
+    font-weight: 600;
+    font-size-adjust: 1;
+}
+
+
+  

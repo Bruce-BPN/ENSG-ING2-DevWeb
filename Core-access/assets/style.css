@@ -1,0 +1,36 @@
+#map {
+    height: 800px;
+}
+
+#inventaire {
+    grid-row: 5; 
+    margin-left: 10px;
+    margin-bottom: 10px;
+    background-color: #d37ae5;
+    color: azure;
+    display: block;
+    align-items: right;
+    height: 100px;
+}
+
+#entete {
+    height: 50px;
+    margin-bottom: 10px;
+    background-color: rgb(59, 172, 248);
+}
+
+html {
+    background-color: rgb(244, 243, 243);
+  }
+
+h1 {
+    color: red; 
+}
+
+a {
+    color:rgb(31, 184, 20);
+}
+
+p {
+    color: rgb(31, 184, 20);
+}
