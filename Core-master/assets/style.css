@@ -48,3 +48,9 @@ p {
 input {
     margin-left: auto;
 }
+
+#carte{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

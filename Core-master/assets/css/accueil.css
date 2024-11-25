@@ -20,12 +20,12 @@ h1 {
     background-color: #008000;
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    margin: 50px auto;
+    margin: 20px auto;
     max-width: 600px;
     text-align: center;
     color: white;
     font-weight: 600;
-    font-size-adjust: 3;
+    font-size-adjust: 2;
 }
 
 table {

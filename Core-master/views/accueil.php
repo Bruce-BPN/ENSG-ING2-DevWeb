@@ -12,7 +12,7 @@
     
   </head>
   <body>
-    <h1>ENSGéoGame</h1>
+    <!-- <h1>ENSGéoGame</h1> -->
     <div class='TitleBox'>ENSGéoGame</div>
     <p>Un jeu créé par Vivien Boucher et Bruce Pourny, étudiants en ING2 à l'ENSG.</p>
     <?php if (!empty($pseudo)) { ?>
