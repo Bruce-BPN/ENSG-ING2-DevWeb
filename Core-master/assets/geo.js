@@ -239,6 +239,10 @@ Vue.createApp({
                             .catch(error => {
                                 console.error('Erreur lors de la récupération du nouvel objet :', error);
                             });
+                            // Ajout du score dans le temps non fonctionnel
+                            // this.calculTemps(now.getMinutes(), now.getSeconds());
+                            this.saveScore(this.score);
+                            console.log(this.score);
                     } else {
                         console.log("Code incorrect :", this.code, "attendu :", objet.code);
                         elem.bindPopup("Code incorrect ! Réessayez.").openPopup();
@@ -247,10 +251,7 @@ Vue.createApp({
                 .catch(error => {
                     console.error("Erreur lors de la récupération de l'objet bloquant : ", error);
                 });
-                // Ajout du score dans le temps non fonctionnel
-                // this.calculTemps(now.getMinutes(), now.getSeconds());
-                this.saveScore(this.score);
-                console.log(this.score);
+                
         }
         
       },
