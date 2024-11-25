@@ -1,0 +1,45 @@
+#map {
+    height: 800px;
+}
+
+#inventaire {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: flex-start;
+    height: 100px;
+    margin-top: 20px;
+    margin-left: 50px;
+    gap: 50px;
+    font-weight: 800;
+}
+
+#entete {
+    display:flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    text-align: center;
+}
+
+#objets {
+    width: 50px;
+    height: 80px;
+}
+
+h1 {
+    
+    font-size-adjust: 1.25;
+}
+
+input {
+    margin-left: auto;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+

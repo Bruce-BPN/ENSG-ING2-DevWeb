@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&family=Parkinsans:wght@300..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/accueil.css">
+    <link rel="stylesheet" href="assets/css/global.css">
     <link rel="bootstrap" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css">
     
   </head>
@@ -26,8 +27,8 @@
     <?php } ?>
 
     <h2>Début du jeu</h2>
-    <p>Viens à la découverte du secret de l'université Gustave Eiffel, qui contrairement aux apparences renferme des pouvoirs magiques.</p>
-    <a href="/carte" title="Démarrer">Démarrer</a>
+    <p>Viens à la découverte du secret de l'université Gustave Eiffel, qui contrairement aux apparences renferme des pouvoirs magiques.<br>Ou alors, peut-être que ce qui est magique, c'est le scénario qui permet de trouver ce secret. A ceux qui y joueront, si vous y trouvez une cohérence...</p>
+    <a href="/carte" title="Démarrer" id='DemButton'>Démarrer</a>
 
     <div class='HFbox'>Hall of Fame</div>
     <table>
