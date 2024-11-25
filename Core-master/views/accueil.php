@@ -16,10 +16,8 @@
     <div class='TitleBox'>ENSGéoGame</div>
     <p>Un jeu créé par Vivien Boucher et Bruce Pourny, étudiants en ING2 à l'ENSG.</p>
     <?php if (!empty($pseudo)) { ?>
-        <!-- Si le pseudo est défini -->
         <p>Bienvenue, <strong><?= htmlspecialchars($pseudo) ?></strong> !</p>
     <?php } else { ?>
-        <!-- Si le pseudo n'est pas encore défini -->
         <form action="/api/set_pseudo" method="POST">
             <label for="pseudo">Entrez votre pseudo :</label>
             <input type="text" id="pseudo" name="pseudo" required>
@@ -43,7 +41,7 @@
       $rank = 1;
       foreach ($results as $scores) { ?>
           <tr>
-            <td><?= $rank ?></td> <!-- Affiche le rang -->
+            <td><?= $rank ?></td>
             <td id='tableNom'><?= htmlspecialchars($scores["pseudo"]) ?></td>
             <td><?= $scores["value"] ?></td>
           </tr>

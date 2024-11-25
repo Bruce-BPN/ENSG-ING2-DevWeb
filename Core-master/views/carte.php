@@ -18,16 +18,15 @@
 
     </head>
     <body>
-        
-
-       
         <div id='app'>
             <div id="map" @zoomend='zoomer'></div>
             <div id="entete">
                 <h1>Carte du jeu</h1>
-                
                 <input type="text" name="code" v-model="code" placeholder="Saisir le code">
-                {{code}}
+                <p>Code saisi : {{ code }}</p>
+                <label>
+                    <input type="checkbox" v-model="showHeatmap"> Afficher la triche
+                </label>
             </div>
             <div id="inventaire">Nos objets
                 <div><img v-show="image" id="objets" :src="image" :alt="Livre" /></div>

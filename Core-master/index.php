@@ -6,8 +6,7 @@ require_once 'flight/Flight.php';
 // require 'flight/autoload.php';
 
 
-Flight::set('pseudo', null); // Le pseudo du joueur (initialement null)
-Flight::set('score_value', 10); // Score par défaut (modifiable)
+Flight::set('pseudo', null);
 
 
 
@@ -23,16 +22,14 @@ function renvoieBDD() {
 }
 
 Flight::route('/', function() {
-    // Récupérer le pseudo de la session s'il existe
+
     $pseudo = $_SESSION['pseudo'] ?? null;
 
     $db = renvoieBDD();
     try {
-        $sth = $db->prepare("SELECT * FROM score ORDER BY value DESC LIMIT 10"); // Récupération des scores
+        $sth = $db->prepare("SELECT * FROM score ORDER BY value DESC LIMIT 10");
         $sth->execute();
-        $results = $sth->fetchAll(PDO::FETCH_ASSOC); // Récupération des résultats
-
-        // Passer les scores et le pseudo à la vue
+        $results = $sth->fetchAll(PDO::FETCH_ASSOC);
         Flight::render('accueil', ['results' => $results, 'pseudo' => $pseudo]); 
     } catch (PDOException $e) {
         Flight::halt(500, 'Erreur lors de la récupération des scores : ' . $e->getMessage());
@@ -47,21 +44,14 @@ Flight::route('POST /api/set_pseudo', function() {
     } else {
         Flight::halt(400, 'Le pseudo est vide');
     }
-
-    // Mettre à jour la variable globale du pseudo
     Flight::set('pseudo', $pseudo);
-    Flight::redirect('/'); // Redirection vers la page d'accueil
+    Flight::redirect('/');
 });
 
 Flight::route('POST /api/save_score', function() {
-    // Récupérer le pseudo de la session s'il existe
-    $pseudo = $_SESSION['pseudo'] ?? null;
-
-    // Pseudo et score
     $pseudo = $_SESSION['pseudo'];
-    $score_value = 10; // Valeur du score
-
-    // Sauvegarde dans la base de données
+    $data = Flight::request()->data;
+    $score_value = $data->score_value;
     $db = renvoieBDD();
     try {
         $sth = $db->prepare("INSERT INTO score (pseudo, value) VALUES (:pseudo, :score_value)");
@@ -80,31 +70,31 @@ Flight::route('/carte', function() {
     Flight::render('carte');
 });
 
-// Route pour récupérer des objets
+
 Flight::route('GET /api/objets', function() {
     $db = renvoieBDD();
     $objets = [];
     try {
-        $sth = $db->prepare("SELECT * FROM objets WHERE depart = 'True'"); // Sélection des objets de départ
+        $sth = $db->prepare("SELECT * FROM objets WHERE depart = 'True'"); 
         $sth->execute();
         $results = $sth->fetchAll(PDO::FETCH_ASSOC);
-        Flight::json($results); // Retourne les objets en JSON
+        Flight::json($results);
     } catch (PDOException $e) {
         Flight::halt(500, 'Erreur lors de la récupération des objets : ' . $e->getMessage());
     }
 });
 
-// Route pour récupérer un objet avec un identifiant spécifique
+
 Flight::route('GET /api/objets/@id', function($id) {
     $db = renvoieBDD();
     try {
-        $sth = $db->prepare("SELECT * FROM objets WHERE id = :id"); // Préparation de la requête avec paramètre
+        $sth = $db->prepare("SELECT * FROM objets WHERE id = :id");
         $sth->bindParam(':id', $id, PDO::PARAM_INT);
         $sth->execute();
         $result = $sth->fetch(PDO::FETCH_ASSOC);
 
         if ($result) {
-            Flight::json($result); // Renvoie l'objet en JSON
+            Flight::json($result);
         } else {
             Flight::halt(404, 'Objet non trouvé');
         }
@@ -113,15 +103,15 @@ Flight::route('GET /api/objets/@id', function($id) {
     }
 });
 
-// Route pour récupérer le score
+
 Flight::route('GET /api/score', function() {
     $db = renvoieBDD();
     $hallOfFame = [];
     try {
-        $sth = $db->prepare("SELECT * FROM score"); // Sélection des scores METTRE UN ORDER BY
+        $sth = $db->prepare("SELECT * FROM score");
         $sth->execute();
         $scores = $sth->fetchAll(PDO::FETCH_ASSOC);
-        Flight::json($scores); // Retourne les scores en JSON
+        Flight::json($scores);
     } catch (PDOException $e) {
         Flight::halt(500, 'Erreur lors de la récupération des scores : ' . $e->getMessage());
     }
