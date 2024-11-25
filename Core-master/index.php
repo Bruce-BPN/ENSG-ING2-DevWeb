@@ -5,6 +5,7 @@ session_start();
 require_once 'flight/Flight.php';
 // require 'flight/autoload.php';
 
+
 Flight::set('pseudo', null); // Le pseudo du joueur (initialement null)
 Flight::set('score_value', 10); // Score par défaut (modifiable)
 
@@ -72,6 +73,7 @@ Flight::route('POST /api/save_score', function() {
     } catch (PDOException $e) {
         Flight::halt(500, 'Erreur lors de la sauvegarde du score : ' . $e->getMessage());
     }
+
 });
 
 Flight::route('/carte', function() {
@@ -127,3 +129,4 @@ Flight::route('GET /api/score', function() {
 
 Flight::start();
 ?>
+
