@@ -29,6 +29,6 @@
 
 <form action="" method="get" @submit.prevent="">
 
-<script src="assets/geo1.js"></script>
+<script src="assets/geo.js"></script>
 </body>
 </html>
