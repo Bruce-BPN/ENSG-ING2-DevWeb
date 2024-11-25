@@ -14,10 +14,12 @@
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""></script>
     
+
 </head>
 <body>
 <div id="entete">
     <h1>Carte du jeu</h1>
+
     <input type="text" name="code" v-model="code" placeholder="Saisir le code">
     {{code}}
 </div>

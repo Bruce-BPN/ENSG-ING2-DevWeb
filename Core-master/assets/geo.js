@@ -1,52 +1,65 @@
 Vue.createApp({
-  data() {
-    return {
-      image:'',
-      code:'',
-      score:0,
-      map: null,
-      group:L.layerGroup(),
-      inventaire:L.layerGroup(),
-    };
-  },
-  mounted() {
-    this.map = L.map('map').setView([48.841, 2.5872], 19);
-
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(this.map);
-
-    this.ajouter();
-    console.log("zoom", this.map.getZoom());
-    console.log(this.code);
-    this.map.on('zoomend', this.zoomer);
-    this.group.on('click',this.onMapClick)
-
-    const now = new Date();
-    const hours = now.getHours(); // Heure locale (0-23)
-    const minutes = now.getMinutes(); // Minutes locales (0-59)
-    const seconds = now.getSeconds(); // Secondes locales (0-59)
-
-    console.log(`Heure actuelle locale : ${hours}:${minutes}:${seconds}`);
-
+data() {
+      return {
+        image:'',
+        code:'',
+        score:0,
+        map: null,
+        group:L.layerGroup(),
+        inventaire:L.layerGroup(),
+        heatmapLayer: null,
+      };
+    },
+    mounted() {
+      map = L.map('map').setView([48.841, 2.5872], 19);
     
-  },
-  methods: {
-    ajouter () {  //On ajoute les objets json sur la carte
-      fetch('/api/objets')
-        .then(result => result.json())
-        .then(result => {
-          console.log(result)
-          this.group.clearLayers();
-          result.forEach(
-            objet =>{
-              let coords = objet["position"]
-              let coords_test = coords.replace(/[{}]/g, '').split(',').map(Number)
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(map);
+      
+      // 
+      // CARTE DE CHALEUR
+      //
+      L.tileLayer.wms("http://localhost:8080/geoserver/wms", {
+        layers: 'objets',
+        format: 'image/png',
+        transparent: true,
+        tiled: true,
+        crs: L.CRS.EPSG4326,
+      }).addTo(map);
+      //
+      // FIN DE LA CARTE DE CHALEUR
+      //
+  
+      this.ajouter();
+      console.log("zoom", map.getZoom());
+      console.log(this.code);
+      map.on('zoomend', this.zoomer);
+      this.group.on('click',this.onMapClick)
+
+      const now = new Date();
+      const hours = now.getHours(); // Heure locale (0-23)
+      const minutes = now.getMinutes(); // Minutes locales (0-59)
+      const seconds = now.getSeconds(); // Secondes locales (0-59)
+
+      console.log(`Heure actuelle locale : ${hours}:${minutes}:${seconds}`); 
+    },
+    methods: {
+      ajouter () {  //On ajoute les objets json sur la carte
+        fetch('/api/objets')
+          .then(result => result.json())
+          .then(result => {
+            console.log(result)
+            this.group.clearLayers();
+            result.forEach(
+              objet =>{
+                let coords = objet["position"]
+                let coords_test = coords.replace(/[{}]/g, '').split(',').map(Number)
               let taille = objet["taille"]
               let taille_test = taille.replace(/[{}]/g, '').split(',').map(Number)
-              let lat = coords_test[0]
-              let lon = coords_test[1]
+                let lat = coords_test[0]
+                let lon = coords_test[1]
               let icone = L.icon({
                 iconUrl: objet["url_icone"],
                 iconSize: [taille_test[0], taille_test[1]],
@@ -70,21 +83,21 @@ Vue.createApp({
                 marker3.code = objet["code"]
               }
           })
-          this.group.addTo(this.map) //on ajoute le groupe de marker à la carte
-        })
-    },
-    
-    zoomer () { //Affichage des objets en fonction du niveau de zoom de la carte
-        var z = this.map.getZoom();
+          this.group.addTo(map) //on ajoute le groupe de marker à la carte
+          })
+      },
       
+      zoomer () { //Affichage des objets en fonction du niveau de zoom de la carte
+        var z = map.getZoom();
+        
         if(z < 19){
-          if (this.map.hasLayer(this.group)) {
-            this.map.removeLayer(this.group);
+          if (map.hasLayer(this.group)) {
+            map.removeLayer(this.group);
           }          
           //On supprime le marker en dessous d'un certain niveau de zoom
-        } else {
-          if (!this.map.hasLayer(this.group)) {   
-            this.group.addTo(this.map);
+          } else {
+          if (!map.hasLayer(this.group)) {   
+            this.group.addTo(map);
         }}
     },
 
@@ -99,32 +112,32 @@ Vue.createApp({
       console.log('+click');
       console.log(elem)
         if(elem.type == "Récupérable"){
-          this.inventaire.addLayer(elem) //On ajoute l'objet à l'inventaire
+            this.inventaire.addLayer(elem) //On ajoute l'objet à l'inventaire
           this.group.removeLayer(elem)
           this.image = elem.icon
           this.inventaire.icon = elem.icon
           this.inventaire.id = elem.id
           console.log(this.image)
           this.score = this.score + 10
-          this.map.removeLayer(elem)  //On enlève l'objet de la carte        
-        }
-
+          map.removeLayer(elem)  //On enlève l'objet de la carte        
+          }
+  
         if(elem.type == "Code"){
           this.score = this.score + 10
           console.log('affichage du code')
           //On affiche le code lorsque l'on clique sur l'objet
-        }
-
+          }
+  
         if(elem.type == "Bloqué par objet"){
           if(elem.idBloque == this.inventaire.id) {  //On teste si l'id de l'élément qui bloque l'objet est dans l'inventaire
             this.score = this.score + 10
             fetch('/api/objets/3')//On recupere id du nouvel objet et on l'ajoute à la carte
-            .then(r => r.json())
-            .then(r => {
-              console.log(r);
+              .then(r => r.json())
+              .then(r => {
+                console.log(r);
               this.group.removeLayer(elem);
               this.image = ""
-              this.map.removeLayer(elem);
+              map.removeLayer(elem);
               r.forEach(
                 objet =>{
                   var coords = objet["position"]
@@ -142,21 +155,21 @@ Vue.createApp({
                 marker4.type = objet["type"]
                 marker4.idBloque = objet["idbloque"]
             })})
-          }else{
+            }else{
             fetch('/api/objets/'+elem.idBloque, { //On recupere l'objet qui bloque
-              method: 'get',
-            })
-            .then(r => r.json())
-            .then(r => {
+                method: 'get',
+              })
+              .then(r => r.json())
+              .then(r => {
               console.log(r); //il faut appuyer 2 fois sur l'objet de la carte pour afficher le popup
               elem.bindPopup("Bloqué par un "+r[0]["nom"]+" bien utile d'identifiant "+r[0]["id"]);
-            })
-          };
-        }
-
+              })
+            };
+          }
+  
         if(elem.type == "Bloqué par code"){
           fetch('/api/objets/'+elem.idBloque, { //On recupere l'objet qui bloque
-            method: 'get',
+              method: 'get',
           })
           .then(r => r.json())
           .then(r => {
@@ -172,7 +185,7 @@ Vue.createApp({
               console.log(r);
               this.group.removeLayer(elem);
               this.code = ""
-              this.map.removeLayer(elem);
+              map.removeLayer(elem);
               r.forEach(
                 objet =>{
                   var coords = objet["position"]
@@ -191,8 +204,8 @@ Vue.createApp({
                 this.calculTemps(now.getMinutes(),now.getSeconds()) //on calcule le temps mis par le jeu
             })})
           }
-        }
-    },
-    },
-}).mount('#map');
+          }
+      },
+      },
+  }).mount('#map');
 
